@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+    <head> 
+        <meta charset="utf-8" />
+        <title>CheemsBank</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="El banco preferido por los mexicanos" name="description" />
+        <meta content="Rosa Pina" name="author" />
+        
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ url_for('static', filename='js/dogo/signup.js') }}"></script>
+        
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+        <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
+    </head>
+
+    <body class="auth-body-bg">
+        
+        <div>
+            <div class="container-fluid p-0">
+                <div class="row g-0">
+                    
+                    <div class="col-xl-9">
+                        <div class="auth-full-bg pt-lg-5 p-4">
+                            <div class="w-100">
+                                <div class="bg-overlay"></div>
+                                <div class="d-flex h-100 flex-column">
+    
+                                    <div class="p-4 mt-auto">
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-7">
+                                                <div class="text-center">
+                                                     <img src="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}" alt="" style="margin-bottom:70px">
+                                                    <h4 class="mb-3"> <span class="text-primary-login">El banco preferido de los mexicanos</span> </h4>
+                                                    
+                                                    <div dir="ltr">
+                                                        <div class="owl-carousel owl-theme auth-review-carousel" id="auth-review-carousel">
+                                                            <div class="item">
+                                                                <div class="py-3">
+                                                                    <p class="font-size-16 mb-4">CheemsBank provee servicios de banca para mantener tu dinero guardado de forma segura.</p>
+    
+                                                                    <div>
+                                                                        <h4 class="font-size-16 text-primary-login">Abre tu cuenta y dame todo tu dinero.</h4>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+    
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3">
+                        <div class="auth-full-page-content p-md-5 p-4">
+                            <div class="w-100">
+
+                                <div class="d-flex flex-column h-100">
+                                    <div class="my-auto">
+                                        <div>
+                                            <h5 class="text-primary-login">Bienvenido a CheemsBank</h5>
+                                            <p class="text-muted">Ingresa tus datos para crear a tu cuenta</p>
+                                        </div>
+            
+                                        <div class="mt-4">
+                                            <div class="mb-3">
+                                                <label for="user-name" class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" id="user-name" >
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="user-email" class="form-label">Correo electronico</label>
+                                                <input type="text" class="form-control" id="user-email">
+                                            </div>
+                    
+                                            <div class="mb-3">
+                                                <label class="form-label">Contraseña</label>
+                                                <div class="input-group auth-pass-inputgroup">
+                                                    <input type="password" class="form-control" id="user-password" aria-label="Password" aria-describedby="password-addon">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Repetir contraseña</label>
+                                                <div class="input-group auth-pass-inputgroup">
+                                                    <input type="password" class="form-control" id="user-repeat-password" aria-label="Password" aria-describedby="password-addon">
+                                                </div>
+                                            <div class="mt-3 d-grid">
+                                                <button class="btn btn-primary waves-effect waves-light" id="btn-register">Registrarme</button>
+                                            </div>
+                                           
+                                            <div class="mt-5 text-center">
+                                                <p>¿Ya eres cliente? <br><a href="#" class="fw-medium text-primary"> Inicia sesión </a> </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 mt-md-5 text-center">
+                                        <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> CheemsBank <br> Desarrollado con <i class="mdi mdi-heart text-danger"></i> por Rosa Pina</p>
+                                    </div>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       libs/jquery/jquery.min.js
+        <script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script> 
+        <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }}"></script>
+
+        <script src="{{url_for('static',filename='js/app.js')}}"></script>
+        <script src="{{url_for('static',filename='js/dogo/signup.js')}}"></script>
+
+    </body>
+</html>
+
