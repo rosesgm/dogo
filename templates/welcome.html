@@ -5,168 +5,180 @@
         <title>CheemsBank</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="El banco preferido por los mexicanos" name="description" />
-        <meta content="Tu nombre" name="author" />
+        <meta content="Ceceña" name="author" />
  
-        <link rel="shortcut icon" href="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}">
-
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/site/favicon.png') }}">
         <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-        <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-        <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
-        <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
-    </head>
+            <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+            <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
+        </head>
 
-    <body data-sidebar="dark" data-sidebar-size="small">
+        <body data-sidebar="dark" data-sidebar-size="small">
 
-        <div id="layout-wrapper">
+            <div id="layout-wrapper">
 
-            <header id="page-topbar">
-                <div class="navbar-header">
-                    <div class="d-flex">
-                        <div class="navbar-brand-box">
-                      
-                            <a href="index.html" class="logo logo-light">
-                                <span class="logo-sm">
-                                    <img src="assets/images/site/cheems_bank_logo.png" alt="" height="22">
-                                </span>
-                                <span class="logo-lg">
-                                    <img src="assets/images/site/cheems_bank_logo.png" alt="" height="70" style="margin-top:10px">
-                                </span>
-                            </a>
+                <header id="page-topbar">
+                    <div class="navbar-header">
+                        <div class="d-flex">
+                            <div class="navbar-brand-box">
+                        
+                                <a href="index.html" class="logo logo-light">
+                                    <span class="logo-sm">
+                                        <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="22">
+                                    </span>
+                                    <span class="logo-lg">
+                                        <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="70" style="margin-top:10px">
+                                    </span>
+                                </a>
+                            </div>
+
+                            <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+                                <i class="fa fa-fw fa-bars"></i>
+                            </button>
                         </div>
 
-                        <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
-                            <i class="fa fa-fw fa-bars"></i>
-                        </button>
-                    </div>
-
-                    <div class="d-flex">
-                        <div class="dropdown d-inline-block">
-                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="assets/images/users/default.png"
-                                    alt="Header Avatar">
-                                <span class="d-none d-xl-inline-block ms-1" key="t-henry">Luis López</span>
-                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Mi perfil</span></a> 
-                                <a class="dropdown-item" href="#"><i class="bx bx-key font-size-16 align-middle me-1"></i> <span key="t-lock-screen">Cambiar mi contraseña</span></a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Cerrar sesión</span></a>
+                        <div class="d-flex">
+                            <div class="dropdown d-inline-block">
+                                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img class="rounded-circle header-profile-user" src="{{ url_for('static', filename='images/users/default.png') }}" alt="Header Avatar">
+                                    <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ current_user.name }}</span>
+                                    <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Mi perfil</span></a> 
+                                    <a class="dropdown-item" href="#"><i class="bx bx-key font-size-16 align-middle me-1"></i> <span key="t-lock-screen">Cambiar mi contraseña</span></a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Cerrar sesión</span></a>
+                                </div>
                             </div>
                         </div>
+                        
+    
+                        </div>
                     </div>
-                      
- 
+                </header>
+
+                <div class="vertical-menu">
+                    <div data-simplebar class="h-100">
+                        <div id="sidebar-menu">
+                            <ul class="metismenu list-unstyled" id="side-menu">
+                                <li class="menu-title" key="t-menu">Categoría 1</li>
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-home-circle"></i>
+                                        <span key="t-dashboards">Inicio</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        <li><a href="#" key="t-default">Opción 1</a></li>
+                                        <li><a href="#" key="t-saas">Opción 2</a></li>
+                                        <li><a href="#" key="t-crypto">Opción 3</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="menu-title" key="t-apps">Categoría 2</li>
+
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                        <i class="bx bx-calendar"></i>
+                                        <span key="t-dashboards">Menú 1</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        <li><a href="#" key="t-tui-calendar">Opción 1</a></li>
+                                        <li><a href="#" key="t-full-calendar">Opción 2</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#" class="waves-effect">
+                                        <i class="bx bx-chat"></i>
+                                        <span key="t-chat">Menú 2</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </header>
 
-            <div class="vertical-menu">
-                <div data-simplebar class="h-100">
-                    <div id="sidebar-menu">
-                        <ul class="metismenu list-unstyled" id="side-menu">
-                            <li class="menu-title" key="t-menu">Categoría 1</li>
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-home-circle"></i>
-                                    <span key="t-dashboards">Inicio</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-default">Opción 1</a></li>
-                                    <li><a href="#" key="t-saas">Opción 2</a></li>
-                                    <li><a href="#" key="t-crypto">Opción 3</a></li>
-                                </ul>
-                            </li>
+                <div class="main-content">
 
-                            <li class="menu-title" key="t-apps">Categoría 2</li>
+                    <div class="page-content">
+                        <div class="container-fluid">
 
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-calendar"></i>
-                                    <span key="t-dashboards">Menú 1</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-tui-calendar">Opción 1</a></li>
-                                    <li><a href="#" key="t-full-calendar">Opción 2</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#" class="waves-effect">
-                                    <i class="bx bx-chat"></i>
-                                    <span key="t-chat">Menú 2</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="main-content">
-
-                <div class="page-content">
-                    <div class="container-fluid">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Página en blanco</h4>
-
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Inicio</a></li>
-                                            <li class="breadcrumb-item active">Página en blanco</li>
-                                        </ol>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            
+                                            <th scope="col">Descripción</th>
+                                            <th scope="col">Fecha</th>
+                                            <th scope="col">Monto</th>
+                                            <th scope="col">Tipo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if account and account.transaction %}
+                                            {% for transaction in account.transaction %}
+                                            <tr>
+                                                <td>{{ transaction.description }}</td>
+                                                <td>{{ transaction.date }}</td>
+                                                <td>${{ transaction.amount }}</td>
+                                                <td>{{ transaction.type.name }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td colspan="4" class="text-center">No hay transacciones registradas.</td>
+                                            </tr>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+    
+                    <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog" aria-labelledby="transaction-detailModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="transaction-detailModalLabel">Título de modal</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <footer class="footer">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <script>document.write(new Date().getFullYear())</script> CheemsBank - Servicios Financieros Globales
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="text-sm-end d-none d-sm-block">
+                                        Desarrollado por Rosa Pila
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>  
+                    </footer>
                 </div>
- 
-                <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog" aria-labelledby="transaction-detailModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="transaction-detailModalLabel">Título de modal</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-                
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> CheemsBank - Servicios Financieros Globales
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-sm-end d-none d-sm-block">
-                                    Desarrollado por [tu nombre]
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+
             </div>
 
-        </div>
 
+            <div class="rightbar-overlay"></div>
 
-        <div class="rightbar-overlay"></div>
+    <script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }} "></script>
+            <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }} "></script>
+            <script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }} "></script>
 
-        <script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }}"></script>
-        <script src="{{url_for('static',filename='js/app.js')}}"></script>
-    </body>
+            <script src="{{ url_for('static', filename='js/app.js') }} "></script>
+        </body>
 </html>
