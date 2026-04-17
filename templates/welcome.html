@@ -100,41 +100,107 @@
                     </div>
                 </div>
 
-                <div class="main-content">
+        <div class="main-content">
 
-                    <div class="page-content">
-                        <div class="container-fluid">
+            <div class="page-content">
 
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover">
-                                    <thead class="table-light">
-                                        <tr>
-                                            
-                                            <th scope="col">Descripción</th>
-                                            <th scope="col">Fecha</th>
-                                            <th scope="col">Monto</th>
-                                            <th scope="col">Tipo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% if account and account.transaction %}
+                <div class="container-fluid">
+                        
+                    {% set ns = namespace(balance=0, income=0, expense=0) %}
+                        
+                        {% for transaction in account.transaction %}
+                        
+                            {% if transaction.type.name == 'INCOME' %}
+                                {% set ns.income = ns.income + transaction.amount %}
+                                {% set ns.balance = ns.balance + transaction.amount %}
+                        
+                            {% elif transaction.type.name == 'EXPENSE' %}
+                                {% set ns.expense = ns.expense + transaction.amount %}
+                                {% set ns.balance = ns.balance - transaction.amount %}
+                        
+                         {% endif %}
+                        
+                    {% endfor %}
+
+                        <div class="welcome-header mb-4">
+                            <h2>Hola, {{ current_user.name }}</h2>
+                            <p>Resumen financiero de tu cuenta</p>
+                        </div>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-lg-6">
+                                <div class="card balance-card h-100">
+                                    <div class="card-body">
+                                        <span class="balance-label">Balance actual</span>
+                                        <h2>${{ "%.2f"|format(ns.balance) }}</h2>
+                                        <p>Disponible en tu cuenta</p>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card stat-card income-card h-100">
+                                    <div class="card-body">
+                                        <span class="stat-label">Ingresos</span>
+                                        <h3>${{ "%.2f"|format(ns.income) }}</h3>
+                                        <small>Total acumulado</small>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card stat-card expense-card h-100">
+                                    <div class="card-body">
+                                        <span class="stat-label">Gastos</span>
+                                        <h3>${{ "%.2f"|format(ns.expense) }}</h3>
+                                        <small>Total acumulado</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card transactions-card mt-4">
+                            <div class="card-header">
+                                <h5>Movimientos recientes</h5>
+                            </div>
+                        
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table align-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Descripción</th>
+                                                <th>Fecha</th>
+                                                <th>Monto</th>
+                                                <th>Tipo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             {% for transaction in account.transaction %}
                                             <tr>
                                                 <td>{{ transaction.description }}</td>
                                                 <td>{{ transaction.date }}</td>
-                                                <td>${{ transaction.amount }}</td>
-                                                <td>{{ transaction.type.name }}</td>
+                                                <td class="{% if transaction.type.name == 'INCOME' %}amount-income{% else %}amount-expense{% endif %}">
+                                                    {% if transaction.type.name == 'INCOME' %}
+                                                        + ${{ "%.2f"|format(transaction.amount) }}
+                                                    {% else %}
+                                                        - ${{ "%.2f"|format(transaction.amount) }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if transaction.type.name == 'INCOME' %}
+                                                        <span class="badge-income">INGRESO</span>
+                                                    {% else %}
+                                                        <span class="badge-expense">GASTO</span>
+                                                    {% endif %}
+                                                </td>
                                             </tr>
                                             {% endfor %}
-                                        {% else %}
-                                            <tr>
-                                                <td colspan="4" class="text-center">No hay transacciones registradas.</td>
-                                            </tr>
-                                        {% endif %}
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-    
+                        </div>                          
                     <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog" aria-labelledby="transaction-detailModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -160,7 +226,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-sm-end d-none d-sm-block">
-                                        Desarrollado por Rosa Pila
+                                        Desarrollado por Rosa Pia
                                     </div>
                                 </div>
                             </div>
@@ -168,6 +234,7 @@
                     </footer>
                 </div>
 
+            </div>
             </div>
 
 
