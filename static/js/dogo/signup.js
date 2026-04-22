@@ -29,7 +29,12 @@ function register(){
     }). then(response=>response.json())
     .then(result=> {
             if (result.success){
-                alert("Usuario se guardó correctamente")
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Account created',
+                    text: 'User saved successfully',
+                    confirmButtonColor: '#3085d6'
+                  });
             }else{
                 alert(result.message)
             }

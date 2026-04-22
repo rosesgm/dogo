@@ -14672,3 +14672,185 @@ button {
   }
 }
 /*# sourceMappingURL=bootstrap.min.css.map */
+
+
+/* HEADER */
+.welcome-header h2{
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.welcome-header p{
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 0;
+}
+
+/* CARD BASE */
+.balance-card,
+.stat-card,
+.transactions-card{
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* BALANCE PRINCIPAL */
+.balance-card{
+  background: linear-gradient(135deg, #0f172a, #1d4ed8);
+  color: white;
+  min-height: 180px;
+}
+
+.balance-card .card-body{
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.balance-label{
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.85;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.balance-card h2{
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.balance-card p{
+  font-size: 14px;
+  opacity: 0.85;
+  margin-bottom: 0;
+}
+
+/* STATS */
+.stat-card{
+  background: #ffffff;
+  min-height: 180px;
+}
+
+.stat-card .card-body{
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.stat-label{
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.stat-card h3{
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stat-card small{
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.income-card h3{
+  color: #15803d;
+}
+
+.expense-card h3{
+  color: #b91c1c;
+}
+
+/* TABLA CONTENEDOR */
+.transactions-card{
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.transactions-card .card-header{
+  background: #ffffff;
+  border-bottom: 1px solid #eef2f7;
+  padding: 20px 24px;
+}
+
+.transactions-card .card-header h5{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.transactions-card .card-body{
+  padding: 0;
+}
+
+/* TABLA */
+.table{
+  margin-bottom: 0;
+}
+
+.table thead th{
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table tbody td{
+  padding: 18px 20px;
+  font-size: 14px;
+  color: #374151;
+  border-color: #f1f5f9;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover{
+  background: #f8fbff;
+}
+
+/* MONTOS */
+.amount-income{
+  color: #15803d;
+  font-weight: 700;
+}
+
+.amount-expense{
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+/* BADGES */
+.badge-income,
+.badge-expense{
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.badge-income{
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.badge-expense{
+  background: #fef2f2;
+  color: #b91c1c;
+}
