@@ -1,10 +1,11 @@
 document.getElementById("btn-signin").addEventListener("click", login);
-
-function login(){
+ 
+function login() {
+    const btn = document.getElementById("btn-signin");
     const email = document.getElementById("user-email").value;
     const password = document.getElementById("user-password").value;
-
-    if(email === "") {
+ 
+    if (email === "") {
         Swal.fire({
             title: 'Correo electrónico no ingresado',
             text: 'Debe ingresar su correo electrónico.',
@@ -13,8 +14,19 @@ function login(){
         });
         return;
     }
-
-    if(password === "") {
+ 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        Swal.fire({
+            title: 'Correo inválido',
+            text: 'Ingrese un correo electrónico válido.',
+            icon: 'warning',
+            confirmButtonText: 'Aceptar'
+        });
+        return;
+    }
+ 
+    if (password === "") {
         Swal.fire({
             title: 'Contraseña no ingresada',
             text: 'Debe ingresar una contraseña.',
@@ -23,30 +35,41 @@ function login(){
         });
         return;
     }
-
+ 
     const data = {
         email: email,
         password: password
-    }
-
-    fetch('api/login', {
-        method:"POST",
-        headers: { "Content-Type": "application/json"},
+    };
+ 
+    btn.disabled = true;
+ 
+    fetch('/api/login', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
-    }). then(response => response.json())
-    .then(result =>  {
-        if(result.success){
-                window.location.href = "/welcome";
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            window.location.href = "/welcome";
         } else {
             Swal.fire({
-            title: 'Datos incorrectos',
-            text: 'Sus datos de acceso no son correctos',
-            icon:  'error',
-            confirmButtonText: 'Aceptar'
+                title: 'No se pudo iniciar sesión',
+                text: result.message,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
             });
         }
     })
-    .catch(error => {
-        console.error(error);
+    .catch(() => {
+        Swal.fire({
+            title: 'Error de conexión',
+            text: 'No se pudo conectar con el servidor. Intente de nuevo.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
     })
+    .finally(() => {
+        btn.disabled = false;
+    });
 }

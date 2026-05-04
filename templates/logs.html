@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>CheemsBank - Logs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/site/favicon.png') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
+</head>
+ 
+<body data-sidebar="dark" data-sidebar-size="small">
+<div id="layout-wrapper">
+ 
+    <!-- TOPBAR -->
+    <header id="page-topbar">
+        <div class="navbar-header">
+            <div class="d-flex">
+                <div class="navbar-brand-box">
+                    <a href="{{ url_for('welcome') }}" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="70" style="margin-top:10px">
+                        </span>
+                    </a>
+                </div>
+                <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+                    <i class="fa fa-fw fa-bars"></i>
+                </button>
+            </div>
+            <div class="d-flex">
+                <div class="dropdown d-inline-block">
+                    <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="rounded-circle header-profile-user" src="{{ url_for('static', filename='images/users/default.png') }}" alt="">
+                        <span class="d-none d-xl-inline-block ms-1">{{ current_user.name }}</span>
+                        <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="{{ url_for('welcome') }}"><i class="bx bx-home font-size-16 align-middle me-1"></i> Inicio</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+ 
+    <!-- MENÚ LATERAL -->
+    <div class="vertical-menu">
+        <div class="d-flex align-items-center px-3 py-2">
+            <i class="bx bx-user-circle font-size-20 me-2"></i>
+            <div>
+                <p class="mb-0 fw-bold">{{ current_user.name }}</p>
+                <small class="text-muted">Administrador</small>
+            </div>
+        </div>
+        <div data-simplebar class="h-100">
+            <div id="sidebar-menu">
+                <ul class="metismenu list-unstyled" id="side-menu">
+                    <li class="menu-title">Administración</li>
+                    <li>
+                        <a href="{{ url_for('users') }}" class="waves-effect">
+                            <i class="bx bx-group"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                    <li class="menu-title">Finanzas</li>
+                    <li>
+                        <a href="#" class="waves-effect">
+                            <i class="bx bx-credit-card"></i>
+                            <span>Cuentas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">
+                            <i class="bx bx-transfer"></i>
+                            <span>Transacciones</span>
+                        </a>
+                    </li>
+                    <li class="menu-title">Sistema</li>
+                    <li class="mm-active">
+                        <a href="{{ url_for('logs') }}" class="waves-effect active">
+                            <i class="bx bx-list-ul"></i>
+                            <span>Logs</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">
+                            <i class="bx bx-cog"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+ 
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0"><i class="bx bx-list-ul me-2"></i>Registro de Actividad (Logs)</h4>
+                    <span class="badge bg-secondary">{{ logs|length }} registros</span>
+                </div>
+ 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Fecha</th>
+                                        <th>Usuario</th>
+                                        <th>Descripción</th>
+                                        <th>Tipo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for log in logs %}
+                                    <tr>
+                                        <td>{{ log.id }}</td>
+                                        <td>{{ log.date.strftime('%d/%m/%Y %H:%M:%S') if log.date else '-' }}</td>
+                                        <td>{{ log.user_name }}</td>
+                                        <td>{{ log.description }}</td>
+                                        <td>
+                                            {% if log.log_type.name == 'LOGIN' %}
+                                                <span class="badge bg-primary">LOGIN</span>
+                                            {% elif log.log_type.name == 'SAVE' %}
+                                                <span class="badge bg-success">GUARDAR</span>
+                                            {% elif log.log_type.name == 'EDIT' %}
+                                                <span class="badge bg-warning text-dark">EDITAR</span>
+                                            {% elif log.log_type.name == 'DELETE' %}
+                                                <span class="badge bg-danger">ELIMINAR</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ log.log_type.name }}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            <i class="bx bx-info-circle font-size-20 me-1"></i>
+                                            No hay registros de actividad aún.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+ 
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> CheemsBank - Servicios Financieros Globales
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Desarrollado por Rosa Pia
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+ 
+            </div>
+        </div>
+    </div>
+ 
+</div>
+ 
+<script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+ 
+</body>
+</html>

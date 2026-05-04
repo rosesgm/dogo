@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>CheemsBank - Usuarios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/site/favicon.png') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
+</head>
+
+<body data-sidebar="dark" data-sidebar-size="small">
+<div id="layout-wrapper">
+
+    <!-- TOPBAR -->
+    <header id="page-topbar">
+        <div class="navbar-header">
+            <div class="d-flex">
+                <div class="navbar-brand-box">
+                    <a href="{{ url_for('welcome') }}" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="70" style="margin-top:10px">
+                        </span>
+                    </a>
+                </div>
+                <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+                    <i class="fa fa-fw fa-bars"></i>
+                </button>
+            </div>
+            <div class="d-flex">
+                <div class="dropdown d-inline-block">
+                    <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="rounded-circle header-profile-user" src="{{ url_for('static', filename='images/users/default.png') }}" alt="">
+                        <span class="d-none d-xl-inline-block ms-1">{{ current_user.name }}</span>
+                        <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="{{ url_for('welcome') }}">
+                            <i class="bx bx-home font-size-16 align-middle me-1"></i> Inicio
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                            <i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> Cerrar sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MENÚ LATERAL -->
+    <div class="vertical-menu">
+        <div class="d-flex align-items-center px-3 py-2">
+            <i class="bx bx-user-circle font-size-20 me-2"></i>
+            <div>
+                <p class="mb-0 fw-bold">{{ current_user.name }}</p>
+                <small class="text-muted">Administrador</small>
+            </div>
+        </div>
+        <div data-simplebar class="h-100">
+            <div id="sidebar-menu">
+                <ul class="metismenu list-unstyled" id="side-menu">
+                    <li class="menu-title">Administración</li>
+                    <li class="mm-active">
+                        <a href="{{ url_for('users') }}" class="waves-effect active">
+                            <i class="bx bx-group"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                    <li class="menu-title">Finanzas</li>
+                    <li>
+                        <a href="#" class="waves-effect">
+                            <i class="bx bx-credit-card"></i>
+                            <span>Cuentas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">
+                            <i class="bx bx-transfer"></i>
+                            <span>Transacciones</span>
+                        </a>
+                    </li>
+                    <li class="menu-title">Sistema</li>
+                    <li>
+                        <a href="{{ url_for('logs') }}" class="waves-effect">
+                            <i class="bx bx-list-ul"></i>
+                            <span>Logs</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect">
+                            <i class="bx bx-cog"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0"><i class="bx bx-group me-2"></i>Gestión de Usuarios</h4>
+                    <span class="badge bg-secondary">{{ users|length }} usuarios</span>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Perfil</th>
+                                        <th>Estado</th>
+                                        <th>Permisos</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.name }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>
+                                            {% if user.is_admin() %}
+                                                <span class="badge bg-primary">ADMIN</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">CLIENTE</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if user.is_active %}
+                                                <span class="badge bg-success">Activo</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Inactivo</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% for p in user.permissions %}
+                                                <span class="badge bg-info me-1">{{ p.value.name }}</span>
+                                            {% endfor %}
+                                            {% if not user.permissions %}
+                                                <span class="text-muted small">Sin permisos</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if not user.is_admin() %}
+                                                {% if user.is_active %}
+                                                <button class="btn btn-sm btn-warning me-1"
+                                                    data-user-id="{{ user.id }}"
+                                                    data-new-status="false"
+                                                    onclick="toggleUser(this)">
+                                                    <i class="bx bx-block"></i> Desactivar
+                                                </button>
+                                                {% else %}
+                                                <button class="btn btn-sm btn-success me-1"
+                                                    data-user-id="{{ user.id }}"
+                                                    data-new-status="true"
+                                                    onclick="toggleUser(this)">
+                                                    <i class="bx bx-check"></i> Activar
+                                                </button>
+                                                {% endif %}
+                                                <button class="btn btn-sm btn-primary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#permissionModal"
+                                                    data-user-id="{{ user.id }}"
+                                                    data-user-name="{{ user.name }}"
+                                                    onclick="setPermissionUser(this)">
+                                                    <i class="bx bx-plus"></i> Permiso
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> CheemsBank - Servicios Financieros Globales
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Desarrollado por Rosa Pia
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL: Agregar Permiso -->
+<div class="modal fade" id="permissionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar permiso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Usuario: <strong id="modal-user-name"></strong></p>
+                <input type="hidden" id="modal-user-id">
+                <div class="mb-3">
+                    <label class="form-label">Selecciona el permiso</label>
+                    <select class="form-select" id="permission-select">
+                        <option value="1">CUSTOMER_EDIT</option>
+                        <option value="2">CUSTOMER_DELETE</option>
+                        <option value="3">ACCOUNT</option>
+                        <option value="4">TRANSACTION_COMMIT</option>
+                        <option value="5">USER_VIEW</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="savePermission()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+<script>
+    function toggleUser(btn) {
+        const userId = btn.getAttribute("data-user-id");
+        const newStatus = btn.getAttribute("data-new-status") === "true";
+
+        fetch(`/api/users/${userId}/toggle`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ is_active: newStatus })
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) {
+                Swal.fire({
+                    title: 'Listo',
+                    text: result.message,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => location.reload());
+            } else {
+                Swal.fire('Error', result.message, 'error');
+            }
+        })
+        .catch(() => Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error'));
+    }
+
+    function setPermissionUser(btn) {
+        const userId = btn.getAttribute("data-user-id");
+        const userName = btn.getAttribute("data-user-name");
+        document.getElementById("modal-user-id").value = userId;
+        document.getElementById("modal-user-name").textContent = userName;
+    }
+
+    function savePermission() {
+        const userId = document.getElementById("modal-user-id").value;
+        const value = document.getElementById("permission-select").value;
+
+        fetch(`/api/users/${userId}/permissions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ value: value })
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) {
+                Swal.fire({
+                    title: 'Listo',
+                    text: result.message,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => location.reload());
+            } else {
+                Swal.fire('Aviso', result.message, 'warning');
+            }
+        })
+        .catch(() => Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error'));
+    }
+</script>
+
+</body>
+</html>

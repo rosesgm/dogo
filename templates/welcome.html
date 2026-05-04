@@ -9,119 +9,146 @@
  
         <link rel="shortcut icon" href="{{ url_for('static', filename='images/site/favicon.png') }}">
         <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-            <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-            <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
-            <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
-        </head>
-
-        <body data-sidebar="dark" data-sidebar-size="small">
-
-            <div id="layout-wrapper">
-
-                <header id="page-topbar">
-                    <div class="navbar-header">
-                        <div class="d-flex">
-                            <div class="navbar-brand-box">
-                        
-                                <a href="index.html" class="logo logo-light">
-                                    <span class="logo-sm">
-                                        <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="22">
-                                    </span>
-                                    <span class="logo-lg">
-                                        <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="70" style="margin-top:10px">
-                                    </span>
-                                </a>
-                            </div>
-
-                            <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
-                                <i class="fa fa-fw fa-bars"></i>
+        <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+        <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
+    </head>
+ 
+    <body data-sidebar="dark" data-sidebar-size="small">
+ 
+        <div id="layout-wrapper">
+ 
+            <header id="page-topbar">
+                <div class="navbar-header">
+                    <div class="d-flex">
+                        <div class="navbar-brand-box">
+                            <a href="index.html" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="22">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="{{ url_for('static', filename='images/site/cheems_bank_logo.png') }}" alt="" height="70" style="margin-top:10px">
+                                </span>
+                            </a>
+                        </div>
+ 
+                        <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+                            <i class="fa fa-fw fa-bars"></i>
+                        </button>
+                    </div>
+ 
+                    <div class="d-flex">
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="{{ url_for('static', filename='images/users/default.png') }}" alt="Header Avatar">
+                                <span class="d-none d-xl-inline-block ms-1">{{ current_user.name }}</span>
+                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                             </button>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="dropdown d-inline-block">
-                                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img class="rounded-circle header-profile-user" src="{{ url_for('static', filename='images/users/default.png') }}" alt="Header Avatar">
-                                    <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ current_user.name }}</span>
-                                    <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Mi perfil</span></a> 
-                                    <a class="dropdown-item" href="#"><i class="bx bx-key font-size-16 align-middle me-1"></i> <span key="t-lock-screen">Cambiar mi contraseña</span></a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Cerrar sesión</span></a>
-                                </div>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span>Mi perfil</span></a> 
+                                <a class="dropdown-item" href="#"><i class="bx bx-key font-size-16 align-middle me-1"></i> <span>Cambiar mi contraseña</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span>Cerrar sesión</span></a>
                             </div>
-                        </div>
-                        
-    
                         </div>
                     </div>
-                </header>
-
-                <div class="vertical-menu">
-                    <div data-simplebar class="h-100">
-                        <div id="sidebar-menu">
-                            <ul class="metismenu list-unstyled" id="side-menu">
-                                <li class="menu-title" key="t-menu">Categoría 1</li>
-                                <li>
-                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        <i class="bx bx-home-circle"></i>
-                                        <span key="t-dashboards">Inicio</span>
-                                    </a>
-                                    <ul class="sub-menu" aria-expanded="false">
-                                        <li><a href="#" key="t-default">Opción 1</a></li>
-                                        <li><a href="#" key="t-saas">Opción 2</a></li>
-                                        <li><a href="#" key="t-crypto">Opción 3</a></li>
-                                    </ul>
-                                </li>
-
-                                <li class="menu-title" key="t-apps">Categoría 2</li>
-
-                                <li>
-                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        <i class="bx bx-calendar"></i>
-                                        <span key="t-dashboards">Menú 1</span>
-                                    </a>
-                                    <ul class="sub-menu" aria-expanded="false">
-                                        <li><a href="#" key="t-tui-calendar">Opción 1</a></li>
-                                        <li><a href="#" key="t-full-calendar">Opción 2</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#" class="waves-effect">
-                                        <i class="bx bx-chat"></i>
-                                        <span key="t-chat">Menú 2</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+ 
+                </div>
+            </header>
+ 
+            <!-- ===================== MENÚ LATERAL ===================== -->
+            <div class="vertical-menu">
+ 
+                <div class="d-flex align-items-center px-3 py-2">
+                    <i class="bx bx-user-circle font-size-20 me-2"></i>
+                    <div>
+                        <p class="mb-0 fw-bold">{{ current_user.name }}</p>
+                        <small class="text-muted">
+                            {% if current_user.is_admin() %}
+                                Administrador
+                            {% else %}
+                                Cliente
+                            {% endif %}
+                        </small>
                     </div>
                 </div>
-
-        <div class="main-content">
-
-            <div class="page-content">
-
-                <div class="container-fluid">
-                        
-                    {% set ns = namespace(balance=0, income=0, expense=0) %}
-                        
+ 
+                <div data-simplebar class="h-100">
+                    <div id="sidebar-menu">
+                        <ul class="metismenu list-unstyled" id="side-menu">
+ 
+                            <!-- ── ADMIN: Usuarios ── -->
+                            {% if current_user.is_admin() %}
+                            <li class="menu-title">Administración</li>
+                            <li>
+                                <a href="{{ url_for('users') }}" class="waves-effect">
+                                    <i class="bx bx-group"></i>
+                                    <span>Usuarios</span>
+                                </a>
+                            </li>
+                            {% endif %}
+ 
+                            <!-- ── Cuentas: ADMIN o permiso ACCOUNT ── -->
+                            {% if current_user.is_admin() or current_user.has_permission(ValuePermission.ACCOUNT) %}
+                            <li class="menu-title">Finanzas</li>
+                            <li>
+                                <a href="#" class="waves-effect">
+                                    <i class="bx bx-credit-card"></i>
+                                    <span>Cuentas</span>
+                                </a>
+                            </li>
+                            {% endif %}
+ 
+                            <!-- ── Transacciones: ADMIN o permiso TRANSACTION_COMMIT ── -->
+                            {% if current_user.is_admin() or current_user.has_permission(ValuePermission.TRANSACTION_COMMIT) %}
+                            <li>
+                                <a href="#" class="waves-effect">
+                                    <i class="bx bx-transfer"></i>
+                                    <span>Transacciones</span>
+                                </a>
+                            </li>
+                            {% endif %}
+ 
+                            <!-- ── ADMIN: Logs y Configuración ── -->
+                            {% if current_user.is_admin() %}
+                            <li class="menu-title">Sistema</li>
+                            <li>
+                                <a href="{{ url_for('logs') }}" class="waves-effect">
+                                    <i class="bx bx-list-ul"></i>
+                                    <span>Logs</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="waves-effect">
+                                    <i class="bx bx-cog"></i>
+                                    <span>Configuración</span>
+                                </a>
+                            </li>
+                            {% endif %}
+ 
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- ===================== FIN MENÚ ===================== -->
+ 
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="container-fluid">
+                            
+                        {% set ns = namespace(balance=0, income=0, expense=0) %}
+                            
                         {% for transaction in account.transaction %}
-                        
                             {% if transaction.type.name == 'INCOME' %}
                                 {% set ns.income = ns.income + transaction.amount %}
                                 {% set ns.balance = ns.balance + transaction.amount %}
-                        
                             {% elif transaction.type.name == 'EXPENSE' %}
                                 {% set ns.expense = ns.expense + transaction.amount %}
                                 {% set ns.balance = ns.balance - transaction.amount %}
-                        
-                         {% endif %}
-                        
-                    {% endfor %}
-
+                            {% endif %}
+                        {% endfor %}
+ 
                         <div class="welcome-header mb-4">
                             <h2>Hola, {{ current_user.name }}</h2>
                             <p>Resumen financiero de tu cuenta</p>
@@ -163,7 +190,6 @@
                             <div class="card-header">
                                 <h5>Movimientos recientes</h5>
                             </div>
-                        
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table align-middle mb-0">
@@ -200,52 +226,36 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>                          
-                    <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog" aria-labelledby="transaction-detailModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="transaction-detailModalLabel">Título de modal</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div>
                         </div>
-                    </div> 
-                    
-                    <footer class="footer">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <script>document.write(new Date().getFullYear())</script> CheemsBank - Servicios Financieros Globales
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="text-sm-end d-none d-sm-block">
-                                        Desarrollado por Rosa Pia
+ 
+                        <footer class="footer">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <script>document.write(new Date().getFullYear())</script> CheemsBank - Servicios Financieros Globales
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="text-sm-end d-none d-sm-block">
+                                            Desarrollado por Rosa Pia
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </footer>
+                        </footer>
+ 
+                    </div>
                 </div>
-
             </div>
-            </div>
-
-
-            <div class="rightbar-overlay"></div>
-
-    <script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script>
-            <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-            <script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }} "></script>
-            <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }} "></script>
-            <script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }} "></script>
-
-            <script src="{{ url_for('static', filename='js/app.js') }} "></script>
-        </body>
+ 
+        </div>
+ 
+        <div class="rightbar-overlay"></div>
+ 
+        <script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    </body>
 </html>
