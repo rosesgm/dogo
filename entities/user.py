@@ -96,6 +96,40 @@ class User (UserMixin):
             print(f"Error al verificar el login: {e}")
             return None
 
+
+        #LIKE: busca por nombre o email
+    @staticmethod
+    def search(query: str):
+        try:
+            connection = get_connection()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+            # LIKE: busca por nombre o email
+            sql = """
+                SELECT id, name, email, profile, is_active
+                FROM user
+                WHERE name LIKE %s OR email LIKE %s
+            """
+            like = f"%{query}%"
+            cursor.execute(sql, (like, like))
+            rows = cursor.fetchall()
+
+            cursor.close()
+            connection.close()
+
+            users = []
+            for row in rows:
+                profile = Profile(
+                    int(row["profile"])) if row["profile"] is not None else Profile.CUSTOMER
+                is_active = parse_bool(row["is_active"])
+                permissions = Permission.get_permission_by_user(row["id"])
+                users.append(User(row["id"], row["name"], row["email"],
+                                  None, profile, permissions, is_active))
+            return users
+        except Exception as ex:
+            print(f"Error searching users: {ex}")
+            return []
+
     def get_by_id(id):
         try:
             connection = get_connection()
