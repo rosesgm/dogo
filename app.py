@@ -3,7 +3,9 @@ from entities.user import User
 from entities.account import Account
 from entities.permission import Permission
 from entities.log import Log
+from entities.transaction import Transaction
 from enums.log_type import LogType
+from enums.transaction_type import TransactionType
 from enums.value_permission import ValuePermission
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from dotenv import load_dotenv
@@ -187,6 +189,82 @@ def load_user(user_id):
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+#NUEVOS ENDPOINTS
+
+@app.route("/api/transactions", methods=["POST"])
+@login_required
+def create_transaction():
+    if not current_user.has_permission(ValuePermission.TRANSACTION_COMMIT):
+        return jsonify({"success": False, "message": "Acceso no autorizado"}), 403
+
+    data = request.get_json()
+    id_account = data.get("id_account")
+    description = data.get("description")
+    amount = float(data.get("amount", 0))
+    type_value = data.get("type")  # 1=INCOME, 2=EXPENSE
+
+    try:
+        transaction_type = TransactionType(int(type_value))
+    except (ValueError, KeyError):
+        return jsonify({"success": False, "message": "Tipo de transacción no válido."}), 400
+
+    success, message = Transaction.save(
+        id_account, description, amount, transaction_type)
+    if success:
+        Log.save(
+            current_user, f"Transacción {transaction_type.name} por ${amount}", LogType.SAVE)
+
+    status = 201 if success else 400
+    return jsonify({"success": success, "message": message}), status
+
+
+@app.route("/api/accounts/summary", methods=["GET"])
+@login_required
+def accounts_summary():
+    if not current_user.is_admin():
+        return jsonify({"success": False, "message": "Acceso no autorizado"}), 403
+
+    rows = Account.get_summary()
+    return jsonify({"success": True, "data": rows})
+
+
+@app.route("/api/accounts/top-users", methods=["GET"])
+@login_required
+def top_users():
+    if not current_user.is_admin():
+        return jsonify({"success": False, "message": "Acceso no autorizado"}), 403
+
+    min_t = request.args.get("min_transactions", 1)
+    rows = Account.get_top_users(int(min_t))
+    return jsonify({"success": True, "data": rows})
+
+
+@app.route("/api/accounts/inactive", methods=["GET"])
+@login_required
+def inactive_accounts():
+    if not current_user.is_admin():
+        return jsonify({"success": False, "message": "Acceso no autorizado"}), 403
+
+    rows = Account.get_inactive_accounts()
+    return jsonify({"success": True, "data": rows})
+
+
+@app.route("/api/users/search", methods=["GET"])
+@login_required
+def search_users():
+    if not current_user.is_admin():
+        return jsonify({"success": False, "message": "Acceso no autorizado"}), 403
+
+    q = request.args.get("q", "").strip()
+    if not q:
+        return jsonify({"success": False, "message": "Parámetro de búsqueda requerido."}), 400
+
+    users = User.search(q)
+    return jsonify({
+        "success": True,
+        "users": [{"id": u.id, "name": u.name, "email": u.email} for u in users]
+    })
 
 
 if __name__ == '__main__':
