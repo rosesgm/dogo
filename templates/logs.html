@@ -158,6 +158,89 @@
                     </div>
                 </div>
  
+                <!-- ── RESUMEN DE CUENTAS (VIEW) ── -->
+                <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+                    <h4 class="mb-0"><i class="bx bx-credit-card me-2"></i>Resumen de Cuentas</h4>
+                    <small class="text-muted">via VIEW v_account_summary</small>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0" id="summary-table">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Email</th>
+                                        <th>N° Cuenta</th>
+                                        <th>Saldo</th>
+                                        <th>Transacciones</th>
+                                        <th>Fecha creación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="6" class="text-center text-muted py-3">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── USUARIOS MÁS ACTIVOS (GROUP BY + HAVING) ── -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0"><i class="bx bx-bar-chart me-2"></i>Usuarios más activos</h4>
+                    <div class="d-flex align-items-center gap-2">
+                        <small class="text-muted me-2">Min. transacciones:</small>
+                        <input type="number" id="min-tx" class="form-control form-control-sm"
+                               value="1" min="1" style="width:70px"
+                               onchange="loadTopUsers(this.value)">
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0" id="top-table">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>N° Cuenta</th>
+                                        <th>Saldo</th>
+                                        <th>Total transacciones</th>
+                                        <th>Volumen total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="5" class="text-center text-muted py-3">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── CUENTAS SIN MOVIMIENTOS (Subquery) ── -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0"><i class="bx bx-ghost me-2"></i>Cuentas sin movimientos</h4>
+                    <small class="text-muted">Subquery NOT IN</small>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0" id="inactive-table">
+                                <thead>
+                                    <tr>
+                                        <th>N° Cuenta</th>
+                                        <th>Usuario</th>
+                                        <th>Email</th>
+                                        <th>Fecha creación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="4" class="text-center text-muted py-3">Cargando...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <footer class="footer">
                     <div class="container-fluid">
                         <div class="row">
@@ -185,6 +268,80 @@
 <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
 <script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+<script>
+    // ── Resumen de cuentas via VIEW ──
+    function loadSummary() {
+        fetch("/api/accounts/summary")
+            .then(r => r.json())
+            .then(result => {
+                const tbody = document.querySelector("#summary-table tbody");
+                if (!result.success || result.data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-3">Sin datos.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = result.data.map(r => `
+                    <tr>
+                        <td>${r.user_name}</td>
+                        <td>${r.email}</td>
+                        <td><code>${r.account_number}</code></td>
+                        <td><strong>$${r.balance.toFixed(2)}</strong></td>
+                        <td><span class="badge bg-info">${r.total_transactions}</span></td>
+                        <td>${r.creation_date}</td>
+                    </tr>`).join("");
+            });
+    }
+
+    // ── Usuarios más activos (GROUP BY + HAVING) ──
+    function loadTopUsers(min = 1) {
+        fetch(`/api/accounts/top-users?min_transactions=${min}`)
+            .then(r => r.json())
+            .then(result => {
+                const tbody = document.querySelector("#top-table tbody");
+                if (!result.success || result.data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3">
+                        No hay usuarios con ${min} o más transacciones.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = result.data.map(r => `
+                    <tr>
+                        <td>${r.user_name}</td>
+                        <td><code>${r.account_number}</code></td>
+                        <td>$${parseFloat(r.balance).toFixed(2)}</td>
+                        <td><span class="badge bg-success">${r.total_transactions}</span></td>
+                        <td>$${parseFloat(r.total_volume).toFixed(2)}</td>
+                    </tr>`).join("");
+            });
+    }
+
+    // ── Cuentas sin movimientos (Subquery) ──
+    function loadInactive() {
+        fetch("/api/accounts/inactive")
+            .then(r => r.json())
+            .then(result => {
+                const tbody = document.querySelector("#inactive-table tbody");
+                if (!result.success || result.data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-3">
+                        Todas las cuentas tienen al menos una transacción.</td></tr>`;
+                    return;
+                }
+                tbody.innerHTML = result.data.map(r => `
+                    <tr>
+                        <td><code>${r.account_number}</code></td>
+                        <td>${r.user_name}</td>
+                        <td>${r.email}</td>
+                        <td>${r.creation_date}</td>
+                    </tr>`).join("");
+            });
+    }
+
+    // Cargar todo al entrar a la página
+    document.addEventListener("DOMContentLoaded", () => {
+    loadSummary();
+    loadTopUsers(1);
+    loadInactive();
+});
+</script>
  
 </body>
 </html>
