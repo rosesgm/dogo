@@ -111,7 +111,22 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h4 class="mb-0"><i class="bx bx-group me-2"></i>Gestión de Usuarios</h4>
-                    <span class="badge bg-secondary">{{ users|length }} usuarios</span>
+                    <span class="badge bg-secondary" id="user-count">{{ users|length }} usuarios</span>
+                </div>
+
+                <!-- Barra de búsqueda LIKE -->
+                <div class="card mb-3">
+                    <div class="card-body py-2">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bx bx-search"></i></span>
+                            <input type="text" class="form-control" id="search-input"
+                                placeholder="Buscar por nombre o email..."
+                                oninput="searchUsers(this.value)">
+                            <button class="btn btn-outline-secondary" onclick="clearSearch()">
+                                <i class="bx bx-x"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -251,6 +266,49 @@
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
 <script>
+    let searchTimeout = null;
+
+    function searchUsers(query) {
+        clearTimeout(searchTimeout);
+        if (!query.trim()) {
+            clearSearch();
+            return;
+        }
+        // Debounce: espera 400ms antes de hacer la peticion
+        searchTimeout = setTimeout(() => {
+            fetch(`/api/users/search?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(result => {
+                    if (!result.success) return;
+                    const tbody = document.querySelector("tbody");
+                    document.getElementById("user-count").textContent =
+                        result.users.length + " usuarios";
+                    if (result.users.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">
+                            <i class="bx bx-search-alt font-size-20 me-1"></i>
+                            No se encontraron usuarios con ese criterio.</td></tr>`;
+                        return;
+                    }
+                    tbody.innerHTML = result.users.map(u => `
+                        <tr>
+                            <td>${u.id}</td>
+                            <td>${u.name}</td>
+                            <td>${u.email}</td>
+                            <td><span class="badge ${u.profile === 'ADMIN' ? 'bg-primary' : 'bg-secondary'}">
+                                ${u.profile}</span></td>
+                            <td><span class="badge ${u.is_active ? 'bg-success' : 'bg-danger'}">
+                                ${u.is_active ? 'Activo' : 'Inactivo'}</span></td>
+                            <td><span class="text-muted small">—</span></td>
+                            <td><span class="text-muted small">Recarga para acciones</span></td>
+                        </tr>`).join("");
+                });
+        }, 400);
+    }
+
+    function clearSearch() {
+        location.reload();
+    }
+
     function toggleUser(btn) {
         const userId = btn.getAttribute("data-user-id");
         const newStatus = btn.getAttribute("data-new-status") === "true";
